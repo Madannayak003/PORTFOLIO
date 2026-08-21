@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Madan R — Embedded Systems, AI & IoT</title>
+    <meta name="description"
+        content="Madan R — Electronics and software engineer building embedded systems, IoT platforms, AI applications, computer vision systems and automation." />
+    <meta name="author" content="Madan R" />
+    <meta name="theme-color" content="#090c0a" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #090c0a;
+            --bg-2: #0e1310;
+            --surface: #131a16;
+            --surface-2: #1b241e;
+            --line: #26332c;
+
+            --copper: #c17a42;
+            --copper-bright: #e0954f;
+
+            --green: #49d998;
+            --green-dim: #2c7a57;
+
+            --text: #edf2ee;
+            --muted: #8a9990;
+
+            --display: 'Space Grotesk', sans-serif;
+            --body: 'Inter', sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--green-dim);
+            color: var(--text);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* =========================================================
+     NAVIGATION
+  ========================================================= */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 22px clamp(20px, 5vw, 56px);
+
+            background: linear-gradient(to bottom,
+                    rgba(9, 12, 10, .94),
+                    rgba(9, 12, 10, .55),
+                    transparent);
+
+            backdrop-filter: blur(5px);
+        }
+
+        .brand {
+            font-family: var(--mono);
+            font-size: 14px;
+            letter-spacing: .08em;
+
+            color: var(--text);
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand .dot {
+            color: var(--green);
+            text-shadow: 0 0 10px rgba(73, 217, 152, .5);
+        }
+
+        .navlinks {
+            display: none;
+            gap: clamp(16px, 3vw, 36px);
+        }
+
+        .navlinks a {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: .12em;
+            color: var(--muted);
+            transition:
+                color .25s ease,
+                transform .25s ease;
+            text-transform: uppercase;
+        }
+
+        .navlinks a:hover {
+            color: var(--green);
+            transform: translateY(-1px);
+        }
+
+        @media(min-width:700px) {
+            .navlinks {
+                display: flex;
+            }
+        }
+
+        /* =========================================================
+     HERO
+  ========================================================= */
+
+        #hero {
+            position: relative;
+            height: 100svh;
+            min-height: 600px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            overflow: hidden;
+
+            border-bottom: 1px solid var(--line);
+        }
+
+        #hero-canvas {
+            position: absolute;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            display: block;
+        }
+
+        .hero-vignette {
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(ellipse at 25% 65%,
+                    transparent 0%,
+                    rgba(9, 12, 10, .25) 40%,
+                    var(--bg) 94%);
+
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+
+            background-image:
+                linear-gradient(rgba(73, 217, 152, .025) 1px,
+                    transparent 1px),
+                linear-gradient(90deg,
+                    rgba(73, 217, 152, .025) 1px,
+                    transparent 1px);
+
+            background-size: 60px 60px;
+
+            mask-image: linear-gradient(to bottom,
+                    rgba(0, 0, 0, .7),
+                    transparent 85%);
+
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+
+            padding:
+                0 clamp(20px, 5vw, 56px) clamp(55px, 9vh, 100px);
+
+            max-width: 1000px;
+        }
+
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: .18em;
+
+            color: var(--green);
+
+            text-transform: uppercase;
+
+            margin-bottom: 18px;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .eyebrow::before {
+            content: '';
+
+            width: 22px;
+            height: 1px;
+
+            background: var(--green);
+
+            box-shadow: 0 0 8px rgba(73, 217, 152, .4);
+        }
+
+        h1 {
+            font-family: var(--display);
+            font-weight: 700;
+
+            font-size: clamp(3.2rem, 9vw, 7rem);
+
+            letter-spacing: -.045em;
+            line-height: .92;
+
+            color: var(--text);
+        }
+
+        .hero-role {
+            margin-top: 20px;
+
+            font-family: var(--mono);
+            font-size: clamp(12px, 1.5vw, 15px);
+
+            color: var(--copper-bright);
+
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .hero-sub {
+            margin-top: 20px;
+
+            max-width: 700px;
+
+            font-size: clamp(15px, 1.6vw, 18px);
+
+            color: var(--muted);
+
+            font-weight: 400;
+        }
+
+        .hero-sub b {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .hero-tags {
+            margin-top: 25px;
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hero-tag {
+            border: 1px solid var(--line);
+
+            background: rgba(19, 26, 22, .65);
+
+            padding: 7px 11px;
+
+            font-family: var(--mono);
+            font-size: 10px;
+
+            letter-spacing: .05em;
+
+            color: var(--muted);
+        }
+
+        .scroll-cue {
+            position: absolute;
+
+            bottom: 28px;
+            right: clamp(20px, 5vw, 56px);
+
+            z-index: 2;
+
+            font-family: var(--mono);
+            font-size: 11px;
+
+            color: var(--muted);
+
+            letter-spacing: .1em;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scroll-cue .bar {
+            width: 1px;
+            height: 32px;
+
+            background: var(--line);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-cue .bar::after {
+            content: '';
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 10px;
+
+            background: var(--green);
+
+            animation: scrollpulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes scrollpulse {
+            0% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(32px);
+            }
+        }
+
+        /* =========================================================
+     GENERAL SECTIONS
+  ========================================================= */
+
+        section {
+            padding:
+                clamp(70px, 10vh, 120px) clamp(20px, 5vw, 56px);
+
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-head {
+            display: flex;
+
+            align-items: baseline;
+            gap: 18px;
+
+            margin-bottom: 30px;
+
+            flex-wrap: wrap;
+        }
+
+        .addr {
+            font-family: var(--mono);
+
+            font-size: 13px;
+
+            color: var(--copper-bright);
+
+            letter-spacing: .08em;
+        }
+
+        .section-head h2 {
+            font-family: var(--display);
+
+            font-weight: 600;
+
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+
+            letter-spacing: -.02em;
+        }
+
+        .section-intro {
+            max-width: 720px;
+
+            color: var(--muted);
+
+            font-size: 15.5px;
+
+            margin-bottom: 44px;
+        }
+
+        .reveal {
+            opacity: 0;
+
+            transform: translateY(18px);
+
+            transition:
+                opacity .7s ease,
+                transform .7s ease;
+        }
+
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================================
+     ABOUT / PROFILE
+  ========================================================= */
+
+        .profile-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 1px;
+
+            background: var(--line);
+
+            border: 1px solid var(--line);
+        }
+
+        .profile-item {
+            background: var(--surface);
+
+            padding: 24px 20px;
+
+            transition:
+                background .3s ease,
+                transform .3s ease;
+        }
+
+        .profile-item:hover {
+            background: var(--surface-2);
+        }
+
+        .profile-label {
+            font-family: var(--mono);
+
+            font-size: 11px;
+
+            letter-spacing: .08em;
+
+            color: var(--muted);
+
+            margin-bottom: 8px;
+        }
+
+        .profile-value {
+            font-family: var(--display);
+
+            font-size: 17px;
+
+            color: var(--text);
+        }
+
+        .profile-description {
+            margin-top: 45px;
+
+            max-width: 800px;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            color: var(--muted);
+        }
+
+        .profile-description strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* =========================================================
+     SKILLS / STACK
+  ========================================================= */
+
+        .stack-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(210px, 1fr));
+
+            gap: 20px;
+        }
+
+        .stack-card {
+            border: 1px solid var(--line);
+
+            background: var(--surface);
+
+            padding: 25px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                border-color .3s ease,
+                background .3s ease;
+        }
+
+        .stack-card::after {
+            content: '';
+
+            position: absolute;
+
+            top: 0;
+            right: 0;
+
+            width: 35px;
+            height: 35px;
+
+            border-top: 1px solid var(--green-dim);
+            border-right: 1px solid var(--green-dim);
+
+            opacity: .7;
+        }
+
+        .stack-card:hover {
+            border-color: var(--green-dim);
+            background: var(--surface-2);
+        }
+
+        .stack-number {
+            font-family: var(--mono);
+
+            font-size: 11px;
+
+            color: var(--copper-bright);
+
+            margin-bottom: 14px;
+        }
+
+        .stack-card h3 {
+            font-family: var(--display);
+
+            font-size: 1.2rem;
+
+            margin-bottom: 10px;
+        }
+
+        .stack-card p {
+            color: var(--muted);
+
+            font-size: 13.5px;
+
+            line-height: 1.65;
+        }
+
+        .tech-list {
+            margin-top: 17px;
+
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 6px;
+        }
+
+        .tech {
+            font-family: var(--mono);
+
+            font-size: 10px;
+
+            color: var(--green);
+
+            border: 1px solid var(--green-dim);
+
+            padding: 4px 7px;
+        }
+
+        /* =========================================================
+     PROJECTS
+  ========================================================= */
+
+        .project {
+            border: 1px solid var(--line);
+
+            background: var(--surface);
+
+            padding: clamp(24px, 4vw, 40px);
+
+            margin-bottom: 20px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                border-color .3s ease,
+                background .3s ease;
+        }
+
+        .project::before {
+            content: '';
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 3px;
+            height: 100%;
+
+            background: var(--green-dim);
+
+            transition: background .3s ease;
+        }
+
+        .project:hover {
+            background: var(--surface-2);
+            border-color: #314238;
+        }
+
+        .project:hover::before {
+            background: var(--green);
+        }
+
+        .project-top {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 14px;
+        }
+
+        .project-top h3 {
+            font-family: var(--display);
+
+            font-weight: 600;
+
+            font-size: 1.45rem;
+        }
+
+        .status {
+            font-family: var(--mono);
+
+            font-size: 10px;
+
+            letter-spacing: .08em;
+
+            color: var(--copper-bright);
+
+            border: 1px solid var(--copper);
+
+            padding: 4px 10px;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+        }
+
+        .project p.desc {
+            color: var(--muted);
+
+            font-size: 14.5px;
+
+            max-width: 760px;
+
+            margin-bottom: 22px;
+
+            line-height: 1.7;
+        }
+
+        .project-tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin-bottom: 24px;
+        }
+
+        .project-tag {
+            font-family: var(--mono);
+
+            font-size: 10px;
+
+            color: var(--green);
+
+            border: 1px solid var(--green-dim);
+
+            padding: 4px 8px;
+        }
+
+        .spec-row {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(150px, 1fr));
+
+            gap: 16px 24px;
+
+            font-family: var(--mono);
+
+            font-size: 12px;
+
+            border-top: 1px solid var(--line);
+
+            padding-top: 18px;
+        }
+
+        .spec-row div span {
+            display: block;
+        }
+
+        .spec-row .label {
+            color: var(--muted);
+
+            letter-spacing: .06em;
+
+            margin-bottom: 4px;
+        }
+
+        .spec-row .value {
+            color: var(--text);
+        }
+
+        /* =========================================================
+     PROJECT LINK
+  ========================================================= */
+
+        .project-link {
+            display: inline-flex;
+
+            margin-top: 20px;
+
+            font-family: var(--mono);
+
+            font-size: 11px;
+
+            color: var(--green);
+
+            border-bottom: 1px solid var(--green-dim);
+
+            padding-bottom: 3px;
+
+            transition:
+                color .25s ease,
+                border-color .25s ease;
+        }
+
+        .project-link:hover {
+            color: var(--copper-bright);
+            border-color: var(--copper-bright);
+        }
+
+        /* =========================================================
+     CURRENT FOCUS
+  ========================================================= */
+
+        .focus {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.4fr) minmax(260px, .8fr);
+
+            gap: 20px;
+        }
+
+        .focus-main,
+        .focus-side {
+            border: 1px solid var(--line);
+
+            background: var(--surface);
+
+            padding: clamp(25px, 4vw, 40px);
+        }
+
+        .focus-main h3 {
+            font-family: var(--display);
+
+            font-size: clamp(1.7rem, 4vw, 2.5rem);
+
+            line-height: 1.05;
+
+            margin-bottom: 18px;
+        }
+
+        .focus-main p {
+            color: var(--muted);
+
+            font-size: 14.5px;
+
+            line-height: 1.8;
+
+            max-width: 650px;
+        }
+
+        .focus-side-title {
+            font-family: var(--mono);
+
+            font-size: 11px;
+
+            color: var(--copper-bright);
+
+            letter-spacing: .1em;
+
+            margin-bottom: 18px;
+        }
+
+        .focus-list {
+            list-style: none;
+        }
+
+        .focus-list li {
+            position: relative;
+
+            padding: 10px 0 10px 18px;
+
+            border-bottom: 1px solid var(--line);
+
+            font-family: var(--mono);
+
+            font-size: 11px;
+
+            color: var(--muted);
+        }
+
+        .focus-list li::before {
+            content: '>';
+
+            position: absolute;
+
+            left: 0;
+
+            color: var(--green);
+        }
+
+        /* =========================================================
+     CONTACT
+  ========================================================= */
+
+        #contact {
+            border-bottom: none;
+        }
+
+        .contact-wrap {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .contact-wrap h2 {
+            font-family: var(--display);
+
+            font-weight: 700;
+
+            font-size: clamp(2rem, 6vw, 3.8rem);
+
+            letter-spacing: -.03em;
+
+            line-height: 1.02;
+
+            max-width: 850px;
+        }
+
+        .contact-text {
+            max-width: 600px;
+
+            color: var(--muted);
+
+            font-size: 15px;
+
+            margin-top: 8px;
+        }
+
+        .contact-links {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 14px 34px;
+
+            margin-top: 30px;
+        }
+
+        .contact-links a {
+            font-family: var(--mono);
+
+            font-size: 13px;
+
+            color: var(--green);
+
+            border-bottom: 1px solid var(--green-dim);
+
+            padding-bottom: 3px;
+
+            transition:
+                border-color .25s ease,
+                color .25s ease;
+        }
+
+        .contact-links a:hover {
+            border-color: var(--green);
+
+            color: var(--copper-bright);
+        }
+
+        /* =========================================================
+     FOOTER
+  ========================================================= */
+
+        footer {
+            padding:
+                24px clamp(20px, 5vw, 56px) 40px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            font-family: var(--mono);
+
+            font-size: 10px;
+
+            color: var(--muted);
+
+            letter-spacing: .06em;
+        }
+
+        /* =========================================================
+     RESPONSIVE
+  ========================================================= */
+
+        @media(max-width:700px) {
+
+            nav {
+                padding: 18px 20px;
+            }
+
+            .brand {
+                font-size: 12px;
+            }
+
+            #hero {
+                min-height: 650px;
+            }
+
+            .hero-inner {
+                padding-bottom: 80px;
+            }
+
+            .eyebrow {
+                font-size: 9px;
+
+                letter-spacing: .12em;
+
+                line-height: 1.5;
+            }
+
+            .eyebrow::before {
+                width: 16px;
+            }
+
+            h1 {
+                font-size: clamp(3.2rem, 17vw, 5rem);
+            }
+
+            .hero-role {
+                font-size: 9px;
+
+                line-height: 1.6;
+            }
+
+            .hero-sub {
+                font-size: 14px;
+
+                line-height: 1.7;
+            }
+
+            .hero-tags {
+                gap: 6px;
+            }
+
+            .hero-tag {
+                font-size: 8px;
+                padding: 6px 8px;
+            }
+
+            .scroll-cue {
+                display: none;
+            }
+
+            section {
+                padding-top: 70px;
+                padding-bottom: 70px;
+            }
+
+            .section-head {
+                gap: 10px;
+                margin-bottom: 25px;
+            }
+
+            .addr {
+                font-size: 11px;
+            }
+
+            .section-head h2 {
+                font-size: 1.45rem;
+            }
+
+            .section-intro {
+                font-size: 14px;
+                line-height: 1.7;
+                margin-bottom: 30px;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .profile-item {
+                padding: 18px 15px;
+            }
+
+            .profile-value {
+                font-size: 14px;
+            }
+
+            .profile-description {
+                margin-top: 30px;
+                font-size: 14px;
+                line-height: 1.75;
+            }
+
+            .stack-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project {
+                padding: 22px 20px;
+            }
+
+            .project-top h3 {
+                font-size: 1.25rem;
+            }
+
+            .project p.desc {
+                font-size: 13.5px;
+            }
+
+            .spec-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            .focus {
+                grid-template-columns: 1fr;
+            }
+
+            .focus-main h3 {
+                font-size: 1.8rem;
+            }
+
+            .contact-wrap h2 {
+                font-size: 2.3rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 6px;
+            }
+        }
+
+        @media(max-width:400px) {
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .spec-row {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-wrap h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* =========================================================
+     REDUCED MOTION
+  ========================================================= */
+
+        @media(prefers-reduced-motion:reduce) {
+
+            html {
+                scroll-behavior: auto;
+            }
+
+            .scroll-cue .bar::after {
+                animation: none;
+            }
+
+            .reveal {
+                transition: none;
+
+                opacity: 1;
+
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+     NAVIGATION
+========================================================= -->
+
+    <nav>
+        <div class="brand">
+            <span class="dot">&#9679;</span>
+            MADAN&nbsp;R
+        </div>
+
+        <div class="navlinks">
+            <a href="#about">Profile</a>
+            <a href="#systems">Systems</a>
+            <a href="#ai">AI</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+
+    <!-- =========================================================
+     HERO
+========================================================= -->
+
+    <section id="hero">
+
+        <canvas id="hero-canvas"></canvas>
+
+        <div class="hero-grid"></div>
+        <div class="hero-vignette"></div>
+
+        <div class="hero-inner">
+
+            <div class="eyebrow">
+                Embedded Systems · AI · IoT · Automation
+            </div>
+
+            <h1>Madan R</h1>
+
+            <div class="hero-role">
+                Electronics &amp; Software Engineering
+            </div>
+
+            <p class="hero-sub">
+                I build systems where
+                <b>electronics, software and intelligence</b>
+                meet — from embedded controllers and IoT platforms to
+                <b>computer vision, automation and AI assistants</b>.
+            </p>
+
+            <div class="hero-tags">
+                <span class="hero-tag">EMBEDDED</span>
+                <span class="hero-tag">IOT</span>
+                <span class="hero-tag">ROBOTICS</span>
+                <span class="hero-tag">AI / ML</span>
+                <span class="hero-tag">COMPUTER VISION</span>
+                <span class="hero-tag">WEB</span>
+                <span class="hero-tag">AUTOMATION</span>
+            </div>
+
+        </div>
+
+        <div class="scroll-cue">
+            <div class="bar"></div>
+            SCROLL
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+     PROFILE
+========================================================= -->
+
+    <section id="about">
+
+        <div class="section-head">
+            <span class="addr">0x01</span>
+            <h2>Engineering profile</h2>
+        </div>
+
+        <p class="section-intro reveal">
+            I work across the boundary between physical systems and software,
+            building practical engineering projects rather than isolated demos.
+        </p>
+
+        <div class="profile-grid reveal">
+
+            <div class="profile-item">
+                <div class="profile-label">NAME</div>
+                <div class="profile-value">Madan R</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">DOMAIN</div>
+                <div class="profile-value">Electronics &amp; Software</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">SPECIALIZATION</div>
+                <div class="profile-value">Embedded / IoT / AI</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">PRIMARY LANGUAGE</div>
+                <div class="profile-value">Python</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">IDE</div>
+                <div class="profile-value">VS Code</div>
+            </div>
+
+            <div class="profile-item">
+                <div class="profile-label">CURRENT BUILD</div>
+                <div class="profile-value">JARVIS PRO</div>
+            </div>
+
+        </div>
+
+        <p class="profile-description reveal">
+            My projects range from <strong>microcontrollers and sensors</strong>
+            to <strong>AI-powered applications, computer vision and web platforms</strong>.
+            I enjoy taking a system from the hardware layer all the way through
+            communication, processing, automation and the interface a user actually sees.
+        </p>
+
+    </section>
+
+
+    <!-- =========================================================
+     SYSTEMS
+========================================================= -->
+
+    <section id="systems">
+
+        <div class="section-head">
+            <span class="addr">0x02</span>
+            <h2>Systems on the bench</h2>
+        </div>
+
+        <p class="section-intro reveal">
+            Embedded platforms, communication modules and hardware systems
+            used across my IoT and robotics projects.
+        </p>
+
+        <div class="stack-grid reveal">
+
+            <div class="stack-card">
+                <div class="stack-number">SYS.01</div>
+
+                <h3>Microcontrollers</h3>
+
+                <p>
+                    Building and debugging embedded systems around Arduino,
+                    ESP32 and ESP8266 platforms.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">ARDUINO</span>
+                    <span class="tech">ESP32</span>
+                    <span class="tech">ESP8266</span>
+                </div>
+            </div>
+
+
+            <div class="stack-card">
+                <div class="stack-number">SYS.02</div>
+
+                <h3>Sensors &amp; Actuators</h3>
+
+                <p>
+                    Integrating RFID, ultrasonic sensors, IR sensors,
+                    servos, motors and other hardware into complete systems.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">RFID</span>
+                    <span class="tech">ULTRASONIC</span>
+                    <span class="tech">SERVO</span>
+                    <span class="tech">IR</span>
+                </div>
+            </div>
+
+
+            <div class="stack-card">
+                <div class="stack-number">SYS.03</div>
+
+                <h3>Connectivity</h3>
+
+                <p>
+                    Connecting embedded devices to cloud services,
+                    dashboards and remote systems through wireless networks.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">Wi-Fi</span>
+                    <span class="tech">HTTP</span>
+                    <span class="tech">FIREBASE</span>
+                    <span class="tech">GAS</span>
+                </div>
+            </div>
+
+
+            <div class="stack-card">
+                <div class="stack-number">SYS.04</div>
+
+                <h3>Hardware + Software</h3>
+
+                <p>
+                    Designing complete workflows where physical inputs,
+                    firmware, backend processing and user interfaces work together.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">C/C++</span>
+                    <span class="tech">PYTHON</span>
+                    <span class="tech">JAVASCRIPT</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+     AI / COMPUTER VISION
+========================================================= -->
+
+    <section id="ai">
+
+        <div class="section-head">
+            <span class="addr">0x03</span>
+            <h2>AI &amp; intelligent systems</h2>
+        </div>
+
+        <p class="section-intro reveal">
+            Moving beyond simple automation — using computer vision,
+            machine learning and local AI to make systems understand
+            their environment and respond intelligently.
+        </p>
+
+
+        <div class="project reveal">
+
+            <div class="project-top">
+                <h3>ATMERS</h3>
+                <span class="status">Engineering Project</span>
+            </div>
+
+            <p class="desc">
+                An AI-powered Adaptive Traffic Management &amp; Emergency Response
+                System combining vehicle detection, traffic-density analysis,
+                adaptive signal control and emergency-vehicle prioritization.
+                The system connects computer vision with physical traffic-control
+                hardware to demonstrate an intelligent traffic-management workflow.
+            </p>
+
+            <div class="project-tags">
+                <span class="project-tag">YOLO</span>
+                <span class="project-tag">OPENCV</span>
+                <span class="project-tag">PYTHON</span>
+                <span class="project-tag">ARDUINO MEGA</span>
+                <span class="project-tag">COMPUTER VISION</span>
+                <span class="project-tag">TRAFFIC CONTROL</span>
+            </div>
+
+            <div class="spec-row">
+
+                <div>
+                    <span class="label">VISION</span>
+                    <span class="value">YOLO vehicle detection</span>
+                </div>
+
+                <div>
+                    <span class="label">PROCESSING</span>
+                    <span class="value">Python + OpenCV</span>
+                </div>
+
+                <div>
+                    <span class="label">EMERGENCY</span>
+                    <span class="value">Ambulance / Police / Fire</span>
+                </div>
+
+                <div>
+                    <span class="label">CONTROL</span>
+                    <span class="value">Arduino Mega</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="project reveal">
+
+            <div class="project-top">
+                <h3>JARVIS PRO</h3>
+                <span class="status">Active Development</span>
+            </div>
+
+            <p class="desc">
+                A personal AI assistant architecture focused on natural interaction,
+                memory, planning, tool execution, coding assistance, automation and
+                intelligent system control. The project combines voice interaction,
+                AI models, conversation context, memory and modular skills into a
+                larger assistant platform.
+            </p>
+
+            <div class="project-tags">
+                <span class="project-tag">PYTHON</span>
+                <span class="project-tag">AI</span>
+                <span class="project-tag">OLLAMA</span>
+                <span class="project-tag">VOICE</span>
+                <span class="project-tag">MEMORY</span>
+                <span class="project-tag">AUTOMATION</span>
+            </div>
+
+            <div class="spec-row">
+
+                <div>
+                    <span class="label">AI ENGINE</span>
+                    <span class="value">Local LLM / Ollama</span>
+                </div>
+
+                <div>
+                    <span class="label">CORE</span>
+                    <span class="value">Python</span>
+                </div>
+
+                <div>
+                    <span class="label">SYSTEM</span>
+                    <span class="value">Voice + AI + Tools</span>
+                </div>
+
+                <div>
+                    <span class="label">FOCUS</span>
+                    <span class="value">Natural AI interaction</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+     PROJECTS
+========================================================= -->
+
+    <section id="projects">
+
+        <div class="section-head">
+            <span class="addr">0x04</span>
+            <h2>Selected builds</h2>
+        </div>
+
+        <p class="section-intro reveal">
+            Projects where hardware, software, networking and real-world
+            problem solving come together.
+        </p>
+
+
+        <!-- SMART PARKING -->
+
+        <div class="project reveal">
+
+            <div class="project-top">
+                <h3>RFID Smart Parking System</h3>
+                <span class="status">IoT System</span>
+            </div>
+
+            <p class="desc">
+                A connected parking-management system using RFID identification,
+                ultrasonic and IR sensors, servo-controlled gates and cloud-based
+                logging. The system tracks vehicle entry and exit, assigns parking
+                slots and calculates parking duration and charges.
+            </p>
+
+            <div class="project-tags">
+                <span class="project-tag">ARDUINO UNO</span>
+                <span class="project-tag">ESP8266</span>
+                <span class="project-tag">RFID</span>
+                <span class="project-tag">ULTRASONIC</span>
+                <span class="project-tag">GOOGLE SHEETS</span>
+                <span class="project-tag">FIREBASE</span>
+            </div>
+
+            <div class="spec-row">
+
+                <div>
+                    <span class="label">IDENTIFICATION</span>
+                    <span class="value">MFRC522 RFID</span>
+                </div>
+
+                <div>
+                    <span class="label">CONTROLLER</span>
+                    <span class="value">Arduino + ESP8266</span>
+                </div>
+
+                <div>
+                    <span class="label">CLOUD</span>
+                    <span class="value">Google Apps Script</span>
+                </div>
+
+                <div>
+                    <span class="label">SYSTEM</span>
+                    <span class="value">20-slot parking model</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ESP32 CAM -->
+
+        <div class="project reveal">
+
+            <div class="project-top">
+                <h3>ESP32-CAM Vision System</h3>
+                <span class="status">Computer Vision</span>
+            </div>
+
+            <p class="desc">
+                An ESP32-CAM based vision platform exploring live camera streaming,
+                image capture and integration between embedded hardware and software
+                services. The project focuses on getting constrained embedded hardware
+                to provide useful visual information to a larger software system.
+            </p>
+
+            <div class="project-tags">
+                <span class="project-tag">ESP32-CAM</span>
+                <span class="project-tag">CAMERA</span>
+                <span class="project-tag">STREAMING</span>
+                <span class="project-tag">PYTHON</span>
+                <span class="project-tag">VISION</span>
+            </div>
+
+            <div class="spec-row">
+
+                <div>
+                    <span class="label">BOARD</span>
+                    <span class="value">AI Thinker ESP32-CAM</span>
+                </div>
+
+                <div>
+                    <span class="label">OUTPUT</span>
+                    <span class="value">Live camera stream</span>
+                </div>
+
+                <div>
+                    <span class="label">DOMAIN</span>
+                    <span class="value">Embedded vision</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- IOTRIX -->
+
+        <div class="project reveal">
+
+            <div class="project-top">
+                <h3>IoTrix Lab</h3>
+                <span class="status">Platform Rebuild</span>
+            </div>
+
+            <p class="desc">
+                My engineering platform for presenting and developing IoT,
+                electronics and software projects. The current rebuild focuses on
+                a cleaner architecture, modern responsive UI, authentication,
+                user dashboards, project documentation, engineering articles,
+                SEO infrastructure and a stronger overall user experience.
+            </p>
+
+            <div class="project-tags">
+                <span class="project-tag">HTML</span>
+                <span class="project-tag">CSS</span>
+                <span class="project-tag">JAVASCRIPT</span>
+                <span class="project-tag">FIREBASE</span>
+                <span class="project-tag">WEB</span>
+                <span class="project-tag">SEO</span>
+            </div>
+
+            <div class="spec-row">
+
+                <div>
+                    <span class="label">TYPE</span>
+                    <span class="value">Engineering platform</span>
+                </div>
+
+                <div>
+                    <span class="label">AUTH</span>
+                    <span class="value">Firebase Authentication</span>
+                </div>
+
+                <div>
+                    <span class="label">UI</span>
+                    <span class="value">Responsive web interface</span>
+                </div>
+
+                <div>
+                    <span class="label">FOCUS</span>
+                    <span class="value">IoT + project ecosystem</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OTHER PROJECTS -->
+
+        <div class="project reveal">
+
+            <div class="project-top">
+                <h3>Embedded &amp; Robotics Projects</h3>
+                <span class="status">Portfolio</span>
+            </div>
+
+            <p class="desc">
+                A collection of electronics and robotics builds involving
+                Arduino-based control, Bluetooth communication, motors,
+                sensors, access-control systems and automation.
+            </p>
+
+            <div class="project-tags">
+                <span class="project-tag">ARDUINO</span>
+                <span class="project-tag">BLUETOOTH</span>
+                <span class="project-tag">MOTORS</span>
+                <span class="project-tag">SENSORS</span>
+                <span class="project-tag">ROBOTICS</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+     TECHNOLOGY STACK
+========================================================= -->
+
+    <section id="stack">
+
+        <div class="section-head">
+            <span class="addr">0x05</span>
+            <h2>Technology stack</h2>
+        </div>
+
+        <p class="section-intro reveal">
+            Tools and technologies I use across embedded development,
+            AI, web development and engineering projects.
+        </p>
+
+        <div class="stack-grid reveal">
+
+            <div class="stack-card">
+
+                <div class="stack-number">LANG.01</div>
+
+                <h3>Programming</h3>
+
+                <p>
+                    Languages used to build firmware, automation,
+                    AI systems and web applications.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">PYTHON</span>
+                    <span class="tech">C</span>
+                    <span class="tech">C++</span>
+                    <span class="tech">JAVASCRIPT</span>
+                    <span class="tech">HTML</span>
+                    <span class="tech">CSS</span>
+                </div>
+
+            </div>
+
+
+            <div class="stack-card">
+
+                <div class="stack-number">AI.02</div>
+
+                <h3>AI &amp; Vision</h3>
+
+                <p>
+                    Computer vision, object detection, local AI models
+                    and intelligent automation.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">OPENCV</span>
+                    <span class="tech">YOLO</span>
+                    <span class="tech">OLLAMA</span>
+                    <span class="tech">LLM</span>
+                </div>
+
+            </div>
+
+
+            <div class="stack-card">
+
+                <div class="stack-number">WEB.03</div>
+
+                <h3>Web &amp; Cloud</h3>
+
+                <p>
+                    Building responsive interfaces and connected platforms
+                    for IoT and engineering applications.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">FIREBASE</span>
+                    <span class="tech">GAS</span>
+                    <span class="tech">GITHUB</span>
+                    <span class="tech">NETLIFY</span>
+                </div>
+
+            </div>
+
+
+            <div class="stack-card">
+
+                <div class="stack-number">HW.04</div>
+
+                <h3>Hardware</h3>
+
+                <p>
+                    Embedded boards and electronic modules used to prototype
+                    real-world systems.
+                </p>
+
+                <div class="tech-list">
+                    <span class="tech">ARDUINO</span>
+                    <span class="tech">ESP32</span>
+                    <span class="tech">ESP8266</span>
+                    <span class="tech">RFID</span>
+                    <span class="tech">ESP32-CAM</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+     CURRENT FOCUS
+========================================================= -->
+
+    <section id="focus">
+
+        <div class="section-head">
+            <span class="addr">0x06</span>
+            <h2>Current focus</h2>
+        </div>
+
+        <div class="focus reveal">
+
+            <div class="focus-main">
+
+                <h3>
+                    Building systems, not just features.
+                </h3>
+
+                <p>
+                    My current direction is toward larger intelligent systems where
+                    individual technologies work together: hardware, software,
+                    AI, memory, automation, cloud services and user interfaces.
+                    The goal is to move from isolated prototypes toward reliable,
+                    modular and usable engineering systems.
+                </p>
+
+            </div>
+
+
+            <div class="focus-side">
+
+                <div class="focus-side-title">
+                    ACTIVE AREAS
+                </div>
+
+                <ul class="focus-list">
+                    <li>JARVIS PRO</li>
+                    <li>Natural AI interaction</li>
+                    <li>IoTrix Lab platform</li>
+                    <li>Embedded systems</li>
+                    <li>Computer vision</li>
+                    <li>AI automation</li>
+                    <li>IoT platforms</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+     CONTACT
+========================================================= -->
+
+    <section id="contact">
+
+        <div class="contact-wrap reveal">
+
+            <span class="addr">0x07</span>
+
+            <h2>
+                Let's build something that connects the physical and digital world.
+            </h2>
+
+            <p class="contact-text">
+                Interested in embedded systems, IoT, AI, robotics,
+                computer vision or engineering software? Explore my work
+                and connect with me.
+            </p>
+
+            <div class="contact-links">
+
+                <!-- Replace these placeholders with your real links -->
+
+                <a href="https://github.com/madanr" target="_blank" rel="noopener noreferrer">
+                    GITHUB &rarr;
+                </a>
+
+                <a href="#projects">
+                    PROJECTS &rarr;
+                </a>
+
+                <!--
+      Add your real email when you want:
+
+      <a href="mailto:YOUR_EMAIL">
+        EMAIL &rarr;
+      </a>
+
+      Add your real LinkedIn:
+
+      <a
+        href="YOUR_LINKEDIN_URL"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        LINKEDIN &rarr;
+      </a>
+      -->
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+     FOOTER
+========================================================= -->
+
+    <footer>
+
+        <span>
+            &copy; <span id="year"></span> Madan R
+        </span>
+
+        <span>
+            Embedded · AI · IoT · Automation
+        </span>
+
+    </footer>
+
+
+    <!-- =========================================================
+     THREE.JS
+========================================================= -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+
+        /* =========================================================
+           YEAR
+        ========================================================= */
+
+        document.getElementById('year').textContent =
+            new Date().getFullYear();
+
+
+        /* =========================================================
+           REVEAL ON SCROLL
+        ========================================================= */
+
+        const revealEls =
+            document.querySelectorAll('.reveal');
+
+        const io =
+            new IntersectionObserver(
+                (entries) => {
+
+                    entries.forEach(entry => {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add('in-view');
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: .12
+                }
+            );
+
+        revealEls.forEach(el => io.observe(el));
+
+
+        /* =========================================================
+           THREE.JS HERO
+        ========================================================= */
+
+        const reduceMotion =
+            window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches;
+
+        const canvas =
+            document.getElementById('hero-canvas');
+
+        const heroEl =
+            document.getElementById('hero');
+
+
+        const scene =
+            new THREE.Scene();
+
+
+        const camera =
+            new THREE.PerspectiveCamera(
+                55,
+                heroEl.clientWidth / heroEl.clientHeight,
+                .1,
+                100
+            );
+
+        camera.position.set(0, 0, 13);
+
+
+        const renderer =
+            new THREE.WebGLRenderer({
+                canvas,
+                antialias: true,
+                alpha: true
+            });
+
+
+        renderer.setPixelRatio(
+            Math.min(window.devicePixelRatio, 2)
+        );
+
+        renderer.setSize(
+            heroEl.clientWidth,
+            heroEl.clientHeight
+        );
+
+
+        /* =========================================================
+           CIRCUIT GROUP
+        ========================================================= */
+
+        const group =
+            new THREE.Group();
+
+        scene.add(group);
+
+
+        const isSmall =
+            window.innerWidth < 640;
+
+
+        const gridCount =
+            isSmall ? 5 : 7;
+
+
+        const spacing = 2.6;
+
+        const nodes = [];
+
+        const half =
+            (gridCount - 1) / 2;
+
+
+        /* =========================================================
+           CREATE NODES
+        ========================================================= */
+
+        for (let x = 0; x < gridCount; x++) {
+
+            for (let y = 0; y < gridCount; y++) {
+
+                for (let z = 0; z < 2; z++) {
+
+                    if (Math.random() > .55)
+                        continue;
+
+                    const px =
+                        (x - half) * spacing +
+                        (Math.random() - .5) * .6;
+
+                    const py =
+                        (y - half) * spacing +
+                        (Math.random() - .5) * .6;
+
+                    const pz =
+                        (z - .5) * 3 +
+                        (Math.random() - .5) * .6;
+
+
+                    nodes.push(
+                        new THREE.Vector3(
+                            px,
+                            py,
+                            pz
+                        )
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        /* =========================================================
+           NODE POINTS
+        ========================================================= */
+
+        const nodeGeo =
+            new THREE.BufferGeometry()
+                .setFromPoints(nodes);
+
+
+        const nodeMat =
+            new THREE.PointsMaterial({
+
+                color: 0xc17a42,
+
+                size: .11,
+
+                transparent: true,
+
+                opacity: .9,
+
+                blending:
+                    THREE.AdditiveBlending,
+
+                depthWrite: false
+
+            });
+
+
+        const pointCloud =
+            new THREE.Points(
+                nodeGeo,
+                nodeMat
+            );
+
+
+        group.add(pointCloud);
+
+
+        /* =========================================================
+           TRACE LINES
+        ========================================================= */
+
+        const maxDist =
+            spacing * 1.15;
+
+        const linePositions = [];
+
+
+        for (let i = 0; i < nodes.length; i++) {
+
+            for (let j = i + 1; j < nodes.length; j++) {
+
+                if (
+                    nodes[i].distanceTo(nodes[j])
+                    < maxDist
+                ) {
+
+                    linePositions.push(
+                        nodes[i].x,
+                        nodes[i].y,
+                        nodes[i].z
+                    );
+
+                    linePositions.push(
+                        nodes[j].x,
+                        nodes[j].y,
+                        nodes[j].z
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        const lineGeo =
+            new THREE.BufferGeometry();
+
+
+        lineGeo.setAttribute(
+            'position',
+            new THREE.Float32BufferAttribute(
+                linePositions,
+                3
+            )
+        );
+
+
+        const lineMat =
+            new THREE.LineBasicMaterial({
+
+                color: 0x49d998,
+
+                transparent: true,
+
+                opacity: .22,
+
+                blending:
+                    THREE.AdditiveBlending
+
+            });
+
+
+        const traces =
+            new THREE.LineSegments(
+                lineGeo,
+                lineMat
+            );
+
+
+        group.add(traces);
+
+
+        /* =========================================================
+           SIGNAL PULSES
+        ========================================================= */
+
+        const pulseCount =
+            Math.min(7, nodes.length);
+
+
+        const pulseIndices = [];
+
+
+        while (
+            pulseIndices.length <
+            pulseCount
+        ) {
+
+            const idx =
+                Math.floor(
+                    Math.random() * nodes.length
+                );
+
+
+            if (
+                !pulseIndices.includes(idx)
+            ) {
+
+                pulseIndices.push(idx);
+
+            }
+
+        }
+
+
+        const pulseGeo =
+            new THREE.BufferGeometry()
+                .setFromPoints(
+                    pulseIndices.map(
+                        i => nodes[i]
+                    )
+                );
+
+
+        const pulseMat =
+            new THREE.PointsMaterial({
+
+                color: 0x49d998,
+
+                size: .17,
+
+                transparent: true,
+
+                opacity: 1,
+
+                blending:
+                    THREE.AdditiveBlending,
+
+                depthWrite: false
+
+            });
+
+
+        const pulsePoints =
+            new THREE.Points(
+                pulseGeo,
+                pulseMat
+            );
+
+
+        group.add(pulsePoints);
+
+
+        /* =========================================================
+           INITIAL ROTATION
+        ========================================================= */
+
+        group.rotation.set(
+            -.25,
+            -.4,
+            .08
+        );
+
+
+        let targetRotX =
+            group.rotation.x;
+
+        let targetRotY =
+            group.rotation.y;
+
+
+        const baseRotX =
+            group.rotation.x;
+
+        const baseRotY =
+            group.rotation.y;
+
+
+        /* =========================================================
+           MOUSE INTERACTION
+        ========================================================= */
+
+        window.addEventListener(
+            'mousemove',
+            event => {
+
+                if (window.innerWidth < 700)
+                    return;
+
+
+                const nx =
+                    (event.clientX /
+                        window.innerWidth) -
+                    .5;
+
+
+                const ny =
+                    (event.clientY /
+                        window.innerHeight) -
+                    .5;
+
+
+                targetRotY =
+                    baseRotY + nx * .5;
+
+
+                targetRotX =
+                    baseRotX - ny * .3;
+
+            }
+        );
+
+
+        /* =========================================================
+           RESIZE
+        ========================================================= */
+
+        function onResize() {
+
+            const w =
+                heroEl.clientWidth;
+
+            const h =
+                heroEl.clientHeight;
+
+
+            camera.aspect =
+                w / h;
+
+            camera.updateProjectionMatrix();
+
+
+            renderer.setSize(
+                w,
+                h
+            );
+
+        }
+
+
+        window.addEventListener(
+            'resize',
+            onResize
+        );
+
+
+        /* =========================================================
+           ANIMATION
+        ========================================================= */
+
+        const clock =
+            new THREE.Clock();
+
+
+        function animate() {
+
+            requestAnimationFrame(
+                animate
+            );
+
+
+            const t =
+                clock.getElapsedTime();
+
+
+            if (!reduceMotion) {
+
+                group.rotation.x +=
+                    (
+                        targetRotX -
+                        group.rotation.x
+                    ) * .03;
+
+
+                group.rotation.y +=
+                    (
+                        targetRotY -
+                        group.rotation.y
+                    ) * .03;
+
+
+                group.rotation.y +=
+                    .0009;
+
+
+                pulseMat.opacity =
+                    .55 +
+                    Math.sin(t * 2.2) * .45;
+
+
+                nodeMat.opacity =
+                    .75 +
+                    Math.sin(t * .8) * .15;
+
+            }
+
+
+            renderer.render(
+                scene,
+                camera
+            );
+
+        }
+
+
+        animate();
+
+    </script>
+
+</body>
+
+</html>
